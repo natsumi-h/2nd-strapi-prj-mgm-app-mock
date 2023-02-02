@@ -14,6 +14,6 @@
     "isolatedModules": true,
     "jsx": "preserve"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/config/index.ts", "src/pages/api/login.ts", "src/pages/api/logout.ts", "src/pages/api/user.ts", "node_modules/cookie/cookie.d.ts"],
   "exclude": ["node_modules"]
 }
