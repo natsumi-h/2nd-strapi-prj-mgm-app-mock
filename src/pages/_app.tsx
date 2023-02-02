@@ -3,6 +3,9 @@ import Head from "next/head";
 import { MantineProvider } from "@mantine/core";
 import Layout from "../layout/layout";
 import "../styles/globals.scss";
+import { AuthProvider } from "../context/authContext";
+import { Provider } from "react-redux";
+import { store } from "../state";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -25,9 +28,13 @@ export default function App(props: AppProps) {
           colorScheme: "light",
         }}
       >
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <Provider store={store}>
+          <AuthProvider>
+            <Layout {...pageProps}>
+              <Component {...pageProps} />
+            </Layout>
+          </AuthProvider>
+        </Provider>
       </MantineProvider>
     </>
   );

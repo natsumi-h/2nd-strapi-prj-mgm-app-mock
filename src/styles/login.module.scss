@@ -1,0 +1,18 @@
+.center {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.error {
+  font-size: 12px;
+  color: #fa5252;
+  line-height: 1.2;
+}
+
+.anchor {
+  color: #1c7ed6;
+  font-size: 14px;
+  line-height: 1.55;
+}
