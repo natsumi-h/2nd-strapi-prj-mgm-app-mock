@@ -14,31 +14,26 @@ import {
 } from "@mantine/core";
 import { GetServerSideProps } from "next";
 import { useForm } from "@mantine/form";
-import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
-import { login } from "../../state/authSlice";
+// import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
+// import { login } from "../../state/authSlice";
 import Link from "next/link";
-import { AppDispatch } from "../../state";
-import { RootState } from "../../state/authType";
+// import { AppDispatch } from "../../state";
+// import { RootState } from "../../state/authType";
+// import { useRouter } from "next/router";
+import { useContext } from "react";
+import AuthContext from "../../context/authContext";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
-// kata
-
-// export type RootState = {
-//   auth: {
-//     user: {};
-//     error: string;
-//     token: string;
-//   };
-// };
-
-export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
-
-// kata
+// export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export default function Login() {
-  const dispatch: AppDispatch = useDispatch();
-  // 分割代入
-  const { user, error } = useTypedSelector((state) => state.auth);
-  // const { user, error } = useSelector((state) => state.auth);
+  // const dispatch: AppDispatch = useDispatch();
+  // const { user, error } = useTypedSelector((state) => state.auth);
+  // const router = useRouter();
+  const { user, login, error } = useContext(AuthContext);
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const form = useForm({
     initialValues: {
@@ -69,6 +64,8 @@ export default function Login() {
     },
   });
 
+  user && router.push("/");
+
   return (
     <>
       <Head>
@@ -97,51 +94,46 @@ export default function Login() {
           <form
             onSubmit={form.onSubmit((values) => {
               // console.log(values);
-
               const email = values.email;
               const password = values.password;
-              dispatch(login({ email, password }));
+              login({ email, password });
+              // dispatch(login({ email, password }));
+              // user && console.log("ok");
+              // router.push("/");
+              user || error
+                ? setLoading(false)
+                : !user && !error
+                ? setLoading(true)
+                : "";
             })}
           >
             <TextInput
               label="Email"
               placeholder="you@mantine.dev"
-              // error={form.errors.email && "Invalid email"}
-              // value={form.values.email}
-              // onChange={(event) =>
-              //   form.setFieldValue("email", event.currentTarget.value)
-              // }
               {...form.getInputProps("email")}
             />
             <PasswordInput
               label="Password"
               placeholder="Your password"
               mt="md"
-              // value={form.values.password}
-              // onChange={(event) =>
-              //   form.setFieldValue("password", event.currentTarget.value)
-              // }
-              // error={
-              //   form.errors.password &&
-              //   "Password should include at least 6 characters"
-              // }
               {...form.getInputProps("password")}
             />
             <Group position="apart" mt="lg">
-              <Checkbox label="Remember me" sx={{ lineHeight: 1 }} />
-              <Anchor<"a">
-                onClick={(event) => event.preventDefault()}
-                href="#"
-                size="sm"
-              >
+              <Link href="/account/forgot-password" className={styles.anchor}>
                 Forgot password?
-              </Anchor>
+              </Link>
             </Group>
             <Button type="submit" fullWidth mt="xl">
               Sign in
             </Button>
           </form>
-          {error && <p className={styles.error}>{error}</p>}
+          {error ? (
+            <p className={styles.error}>{error}</p>
+          ) : loading ? (
+            <p className={styles.loading}>Requesting...</p>
+          ) : (
+            ""
+          )}
         </Paper>
       </Container>
     </>

@@ -1,0 +1,38 @@
+.link {
+  display: table-row;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica,
+    Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+  width: 100%;
+  border-collapse: collapse;
+  caption-side: top;
+  color: #000;
+  line-height: 1.55;
+  table-layout: fixed;
+  min-width: 700px;
+  vertical-align: inherit;
+  border-color: inherit;
+  text-indent: initial;
+  border-spacing: 2px;
+  padding: 10px 16px;
+  border-top: 1px solid #dee2e6;
+  font-size: 14px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #f8f9fa;
+  }
+
+  td {
+    padding: 10px 16px;
+    border-top: 1px solid #dee2e6;
+    font-size: 14px;
+  }
+}
+
+.loader {
+  // justify-content: center;
+  // margin-top: 50px;
+  // margin-bottom: 50px;
+  margin: 50px auto 50px auto;
+  display: block;
+}

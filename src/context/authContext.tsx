@@ -1,71 +1,152 @@
-import { createContext, useEffect, ReactNode, FC, ReactElement } from "react";
+import {
+  createContext,
+  useEffect,
+  ReactNode,
+  FC,
+  ReactElement,
+  useState,
+  // ContextType,
+} from "react";
 import { useRouter } from "next/router";
 import { NEXT_URL } from "../config/index";
-import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
-import { setUser, setError, setToken } from "../state/authSlice";
-import { RootState } from "../state/authType";
-import { AppDispatch } from "../state";
+import { loginUser, registerUser } from "../types/authType";
+import { showNotification } from "@mantine/notifications";
 
 type Props = {
   // children?: ReactNode;
   children: ReactElement;
 };
 
-const AuthContext = createContext("dummy");
+export type User = {
+  username: string;
+};
+
+export type ContextType = {
+  user: User | null;
+  error: string | null;
+  logout: Function;
+  login: Function;
+  register: Function;
+};
+
+const AuthContext = createContext<ContextType>({
+  user: null,
+  error: null,
+  logout: () => {},
+  login: () => {},
+  register: () => {},
+});
 
 export const AuthProvider: FC<Props> = ({ children }) => {
   const resolvedUrl = children && children.props.resolvedUrl;
-
   const router = useRouter();
-  const dispatch: AppDispatch = useDispatch();
-  const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
-  // 分割代入
-  const { user, error } = useTypedSelector((state) => state.auth);
+  const [user, setUser] = useState<User | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   //DOMになる瞬間（マウントされる瞬間）に、checkUserLoggedInの処理が走る
   useEffect(() => {
-    dispatch(checkUserLoggedIn());
+    checkUserLoggedIn();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    // userが無効なら
-    if (!user && resolvedUrl !== "/account/signup") {
-      router.push("/account/login");
-    }
-    if (user) {
-      router.push("/");
-      dispatch(setError(null));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
-
-  useEffect(() => {
-    // userが無効なら
-    if (error) {
-      console.log(error);
-    }
-    if (!error) {
-      dispatch(setError(null));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [error]);
-
-  const checkUserLoggedIn = () => async (dispatch: AppDispatch) => {
+  const checkUserLoggedIn = async () => {
     const res = await fetch(`${NEXT_URL}/api/user`);
     const data = await res.json();
+    // console.log(resolvedUrl);
+
     if (res.ok) {
-      dispatch(setUser(data.user));
-      dispatch(setToken(data.token));
-      router.push("/");
+      setUser(data.user);
+      //   if (resolvedUrl == ("/account/signup" || "/account/login")) {
+      //     router.push("/");
+      //   }
     } else {
-      dispatch(setUser(null));
-      dispatch(setToken(null));
-      router.push("/account/login");
+      setUser(null);
+      if (resolvedUrl !== "/account/signup") {
+        router.push("/account/login");
+      }
     }
   };
 
-  return <AuthContext.Provider value="dummy">{children}</AuthContext.Provider>;
+  // Logout user
+  const logout = async () => {
+    const res = await fetch(`${NEXT_URL}/api/logout`, {
+      method: "POST",
+    });
+
+    if (res.ok) {
+      router.push("/account/login");
+      setUser(null);
+      showNotification({
+        autoClose: 5000,
+        title: "Yay!",
+        message: "You have successfully logged out!",
+      });
+    }
+  };
+
+  // Login user
+  const login = async ({ email: identifier, password }: loginUser) => {
+    try {
+      const res = await fetch(`${NEXT_URL}/api/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          identifier,
+          password,
+        }),
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        router.push("/");
+        setUser(data.user);
+        showNotification({
+          autoClose: 5000,
+          title: "Yay!",
+          message: "You have successfully logged in!",
+        });
+      } else {
+        setError(data.message);
+        // setError(null);
+        // console.log(error);
+      }
+    } catch (error) {
+      setError("something wrong");
+    }
+  };
+
+  // Register user
+  const register = async (user: registerUser) => {
+    const res = await fetch(`${NEXT_URL}/api/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      setUser(data.user);
+      router.push("/");
+      showNotification({
+        autoClose: 5000,
+        title: "Yay!",
+        message: "You have successfully been registered!",
+      });
+    } else {
+      setError(data.message);
+      setError(null);
+    }
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, error, logout, login, register }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthContext;

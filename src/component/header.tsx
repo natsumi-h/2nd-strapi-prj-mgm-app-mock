@@ -1,37 +1,37 @@
+import { useState } from "react";
 import {
   createStyles,
   Header,
-  Menu,
-  Group,
-  Center,
-  Burger,
   Container,
+  Group,
+  Burger,
+  Text,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import styles from "../styles/Home.module.scss";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { logout } from "../state/authSlice";
-import { AppDispatch } from "../state";
-import { RootState } from "../state/authType";
-// import { IconChevronDown } from '@tabler/icons';
-// import { MantineLogo } from '@mantine/ds';
+// import { logout } from "../state/authSlice";
+// import { useDispatch, useSelector } from "react-redux";
+import { useContext } from "react";
+import AuthContext from "../context/authContext";
 
 const useStyles = createStyles((theme) => ({
-  inner: {
-    height: 56,
+  header: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+    height: "100%",
   },
 
   links: {
-    [theme.fn.smallerThan("sm")]: {
+    [theme.fn.smallerThan("xs")]: {
       display: "none",
     },
   },
 
   burger: {
-    [theme.fn.largerThan("sm")]: {
+    [theme.fn.largerThan("xs")]: {
       display: "none",
     },
   },
@@ -57,86 +57,67 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
-  linkLabel: {
-    marginRight: 5,
+  linkActive: {
+    "&, &:hover": {
+      backgroundColor: theme.fn.variant({
+        variant: "light",
+        color: theme.primaryColor,
+      }).background,
+      color: theme.fn.variant({ variant: "light", color: theme.primaryColor })
+        .color,
+    },
   },
 }));
 
-interface HeaderSearchProps {
-  // links: {
-  //   link: string;
-  //   label: string;
-  //   links: { link: string; label: string }[];
-  // }[];
+interface HeaderSimpleProps {
+  links: { link: string; label: string }[];
 }
 
-// export function HeaderLayout({ links }: HeaderSearchProps) {
-export function HeaderLayout({}: HeaderSearchProps) {
-  const [opened, { toggle }] = useDisclosure(false);
-  const { classes } = useStyles();
+export function HeaderLayout({ links }: HeaderSimpleProps) {
   const router = useRouter();
+  const [opened, { toggle }] = useDisclosure(false);
+  const [active, setActive] = useState(links[0].link);
+  const { classes, cx } = useStyles();
   // const dispatch = useDispatch();
+  // // 分割代入
+  // const { user } = useSelector((state) => state.auth);
+  const { user, logout } = useContext(AuthContext);
 
-  const dispatch: AppDispatch = useDispatch();
-  const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
-  // 分割代入
-  const { user } = useTypedSelector((state) => state.auth);
-  // const items = links.map((link) => {
-  //   const menuItems = link.links?.map((item) => (
-  //     <Menu.Item key={item.link}>{item.label}</Menu.Item>
-  //   ));
-
-  //   if (menuItems) {
-  //     return (
-  //       <Menu key={link.label} trigger="hover" exitTransitionDuration={0}>
-  //         <Menu.Target>
-  //           <a
-  //             href={link.link}
-  //             className={classes.link}
-  //             onClick={(event) => event.preventDefault()}
-  //           >
-  //             <Center>
-  //               <span className={classes.linkLabel}>{link.label}</span>
-  //               {/* <IconChevronDown size={12} stroke={1.5} /> */}
-  //             </Center>
-  //           </a>
-  //         </Menu.Target>
-  //         <Menu.Dropdown>{menuItems}</Menu.Dropdown>
-  //       </Menu>
-  //     );
-  //   }
-
-  //   return (
-  //     <a
-  //       key={link.label}
-  //       href={link.link}
-  //       className={classes.link}
-  //       onClick={(event) => event.preventDefault()}
-  //     >
-  //       {link.label}
-  //     </a>
-  //   );
-  // });
+  const items = links.map((link) => (
+    <Link
+      key={link.label}
+      href={link.link}
+      // className={cx(classes.link, {
+      //   [classes.linkActive]: active === link.link,
+      // })}
+      className={classes.link}
+    >
+      {link.label}
+    </Link>
+  ));
 
   return (
-    <Header height={56} mb={120}>
-      <Container>
-        <div className={classes.inner}>
-          {/* <MantineLogo size={28} /> */}
+    <Header height={60}>
+      {/* <Container className={classes.header}> */}
+      <div className={styles.container}>
+        <div className={styles.headerContainer}>
+          <Text className={styles.headerText}>
+            Hello {user ? user.username : ""}!
+          </Text>
           <Group spacing={5} className={classes.links}>
-            {/* {items} */}
+            {items}
             <button
+              className={styles.logout}
               onClick={() => {
-                router.push("/account/login");
-                dispatch(logout());
+                // router.push("/account/login");
+                // dispatch(logout());
+                logout();
               }}
             >
-              logout
+              Logout
             </button>
-            <a>hi</a>
-            <a>hi</a>
-            <a>hi</a>
           </Group>
+
           <Burger
             opened={opened}
             onClick={toggle}
@@ -144,7 +125,8 @@ export function HeaderLayout({}: HeaderSearchProps) {
             size="sm"
           />
         </div>
-      </Container>
+      </div>
+      {/* </Container> */}
     </Header>
   );
 }

@@ -1,5 +1,6 @@
 import { createStyles, Container, Group, Anchor } from "@mantine/core";
 // import { MantineLogo } from "@mantine/ds";
+import styles from "../styles/footer.module.scss";
 
 const useStyles = createStyles((theme) => ({
   footer: {
@@ -32,7 +33,7 @@ interface FooterSimpleProps {
   // links: { link: string; label: string }[];
 }
 
-export function FooterLayout({  }: FooterSimpleProps) {
+export function FooterLayout({}: FooterSimpleProps) {
   const { classes } = useStyles();
 
   // const items = navLinks.map((link) => (
@@ -48,12 +49,11 @@ export function FooterLayout({  }: FooterSimpleProps) {
   // ));
 
   return (
-    <div className={classes.footer}>
-      <Container className={classes.inner}>
-        {/* <MantineLogo size={28} /> */}
-        {/* <Group className={classes.links}>{items}</Group> */}
-        <Group className={classes.links}>{/* {items} */}</Group>
-      </Container>
+    <div
+      // className={classes.footer}
+      className={styles.footer}
+    >
+      <div className={styles.footerContainer}>Project Management App</div>
     </div>
   );
 }
