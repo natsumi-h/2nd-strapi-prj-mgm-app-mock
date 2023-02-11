@@ -14,25 +14,22 @@ import {
 } from "@mantine/core";
 import { GetServerSideProps } from "next";
 import { useForm } from "@mantine/form";
-// import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
-// import { RootState } from "../../state/authType";
+import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
+import { RootState } from "../../types/authType";
 import { register } from "../../state/authSlice";
 import { AppDispatch } from "../../state";
 import Link from "next/link";
-// import { valueGetters } from "@mantine/core/lib/Box/style-system-props/value-getters/value-getters";
-import { useContext } from "react";
-import AuthContext from "../../context/authContext";
-// export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
-import { useRouter } from "next/router";
+import { valueGetters } from "@mantine/core/lib/Box/style-system-props/value-getters/value-getters";
 
-export default function Signup() {
-  // const dispatch: AppDispatch = useDispatch();
+export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
+
+export default function ResetPassword() {
+  const dispatch: AppDispatch = useDispatch();
   // const dispatch = useDispatch();
   // 分割代入
 
-  // const { user, error } = useTypedSelector((state) => state.auth);
-  const router = useRouter();
-  const { user, register, error } = useContext(AuthContext);
+  const { user, error } = useTypedSelector((state) => state.auth);
+
   const form = useForm({
     initialValues: {
       username: "",
@@ -86,8 +83,6 @@ export default function Signup() {
     },
   });
 
-  user && router.push("/");
-
   return (
     <>
       <Head>
@@ -103,14 +98,14 @@ export default function Signup() {
             fontWeight: 900,
           })}
         >
-          Create an Account
+          Reset Password
         </Title>
-        <Text color="dimmed" size="sm" align="center" mt={5}>
+        {/* <Text color="dimmed" size="sm" align="center" mt={5}>
           Already have an account?{" "}
           <Link href="/account/login" className={styles.anchor}>
             Login here
           </Link>
-        </Text>
+        </Text> */}
 
         <Paper withBorder shadow="md" p={30} mt={30} radius="md">
           <form
@@ -119,8 +114,7 @@ export default function Signup() {
               const username = values.username;
               const email = values.email;
               const password = values.password;
-              // dispatch(register({ username, email, password }));
-              register({ username, email, password });
+              dispatch(register({ username, email, password }));
             })}
           >
             <TextInput
@@ -148,16 +142,16 @@ export default function Signup() {
             />
             <Group position="apart" mt="lg">
               {/* <Checkbox label="Remember me" sx={{ lineHeight: 1 }} /> */}
-              <Anchor<"a">
+              {/* <Anchor<"a">
                 onClick={(event) => event.preventDefault()}
                 href="#"
                 size="sm"
               >
                 Forgot password?
-              </Anchor>
+              </Anchor> */}
             </Group>
             <Button type="submit" fullWidth mt="xl">
-              Create an Account
+              Reset Password
             </Button>
           </form>
           {error && <p className={styles.error}>{error}</p>}

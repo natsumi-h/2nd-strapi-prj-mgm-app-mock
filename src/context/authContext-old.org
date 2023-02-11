@@ -1,0 +1,88 @@
+// import { createContext, useEffect, ReactNode, FC, ReactElement } from "react";
+// import { useRouter } from "next/router";
+// import { NEXT_URL } from "../config/index";
+// import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
+// import { setUser, setError, setToken } from "../state/authSlice";
+// import { RootState } from "../state/authType";
+// import { AppDispatch } from "../state";
+
+// type Props = {
+//   // children?: ReactNode;
+//   children: ReactElement;
+// };
+
+// const AuthContext = createContext("dummy");
+
+// export const AuthProvider: FC<Props> = ({ children }) => {
+//   const resolvedUrl = children && children.props.resolvedUrl;
+
+//   const router = useRouter();
+//   const dispatch: AppDispatch = useDispatch();
+//   const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
+//   // 分割代入
+//   const { user, error, token } = useTypedSelector((state) => state.auth);
+
+//   //DOMになる瞬間（マウントされる瞬間）に、checkUserLoggedInの処理が走る
+//   useEffect(() => {
+//     dispatch(checkUserLoggedIn());
+//     // console.log("マウント中");
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, []);
+
+//   // useEffect(() => {
+//   //   // userが無効なら
+//   //   if (!user && resolvedUrl !== "/account/signup") {
+//   //     console.log("user無効");
+//   //     router.push("/account/login");
+//   //   }
+//   //   if (user) {
+//   //     dispatch(setError(null));
+//   //     if (resolvedUrl === ("/account/login" || "/account/signup")) {
+//   //       router.push("/");
+//   //     }
+//   //   }
+//   //   // eslint-disable-next-line react-hooks/exhaustive-deps
+//   // }, [user]);
+
+//   useEffect(() => {
+//     // userが無効なら
+//     if (error) {
+//       // console.log(error);
+//     }
+//     if (!error) {
+//       dispatch(setError(null));
+//     }
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, [error]);
+
+//   const checkUserLoggedIn = () => async (dispatch: AppDispatch) => {
+//     const res = await fetch(`${NEXT_URL}/api/user`);
+//     const data = await res.json();
+
+//     if (res.ok) {
+//       dispatch(setUser(data.user));
+//       dispatch(setToken(data.token));
+//       console.log("resok");
+
+//       // console.log("chekking");
+//       if (resolvedUrl == ("/account/signup" || "/account/login")) {
+//         router.push("/");
+//       }
+//     } else {
+//       dispatch(setUser(null));
+//       dispatch(setToken(null));
+//       console.log("resnotok");
+//       if (resolvedUrl !== "/account/signup") {
+//         router.push("/account/login");
+//       }
+//     }
+//   };
+
+//   return <AuthContext.Provider value="dummy">{children}</AuthContext.Provider>;
+// };
+
+// export default AuthContext;
+
+// export const AuthProviderrrrrr = () => {
+//   return <>test</>;
+// };

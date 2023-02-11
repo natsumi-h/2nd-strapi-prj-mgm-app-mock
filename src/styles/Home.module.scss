@@ -1,7 +1,3 @@
-.container {
-  padding: 0 2rem;
-}
-
 .main {
   min-height: 100vh;
   padding: 4rem 0;
@@ -125,5 +121,52 @@
   }
   .logo img {
     filter: invert(1);
+  }
+}
+
+.pagination {
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.container {
+  padding: 0 2rem;
+  height: 100%;
+}
+
+.headerContainer {
+  // padding-left: 16px;
+  // padding-right: 16px;
+  // max-width: 960px;
+  // margin-left: auto;
+  // margin-right: auto;
+  display: flex;
+  justify-content: space-between;
+  // justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+}
+
+.headerText {
+  font-weight: bold;
+}
+
+.logout {
+  border: none;
+  // display: block;
+  line-height: 1;
+  padding: 8px 12px;
+  border-radius: 4px;
+  // text-decoration: none;
+  color: #495057;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  background-color: inherit;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica,
+    Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+
+  &:hover {
+    background-color: #f8f9fa;
   }
 }

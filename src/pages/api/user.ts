@@ -12,6 +12,7 @@ export default async function user(req: NextApiRequest, res: NextApiResponse) {
 
     //リクエストのクッキーを{token}オブジェクトにパース？する
     const { token } = cookie.parse(req.headers.cookie);
+    // console.log(`req.header : ${token}`);
 
     const strapiRes = await fetch(`${API_URL}/users/me`, {
       method: "GET",
