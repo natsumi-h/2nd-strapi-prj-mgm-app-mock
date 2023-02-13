@@ -1,10 +1,10 @@
 import { FC, ReactNode, useContext } from "react";
-import { FooterLayout } from "../component/footer";
-import { HeaderLayout } from "../component/header";
 // import { useDispatch, useSelector } from "react-redux";
 import AuthContext from "../context/authContext";
 import { Loader } from "@mantine/core";
 import styles from "../styles/layout.module.scss";
+import FooterLayout from "../component/footer";
+import HeaderLayout from "../component/header";
 
 type Props = {
   children: ReactNode;
@@ -45,7 +45,7 @@ const Layout: FC<Props> = ({ children, resolvedUrl }) => {
       <>
         <HeaderLayout links={links}></HeaderLayout>
         <main>{children}</main>
-        <FooterLayout></FooterLayout>
+        <FooterLayout />
       </>
     );
   }

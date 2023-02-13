@@ -1,4 +1,5 @@
 import { createStyles, Container, Group, Anchor } from "@mantine/core";
+import { FC } from "react";
 // import { MantineLogo } from "@mantine/ds";
 import styles from "../styles/footer.module.scss";
 
@@ -33,7 +34,7 @@ interface FooterSimpleProps {
   // links: { link: string; label: string }[];
 }
 
-export function FooterLayout({}: FooterSimpleProps) {
+const FooterLayout: FC<FooterSimpleProps> = ({}) => {
   const { classes } = useStyles();
 
   // const items = navLinks.map((link) => (
@@ -56,4 +57,6 @@ export function FooterLayout({}: FooterSimpleProps) {
       <div className={styles.footerContainer}>Project Management App</div>
     </div>
   );
-}
+};
+
+export default FooterLayout;

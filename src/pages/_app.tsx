@@ -8,6 +8,7 @@ import { AuthProvider } from "../context/authContext";
 // import { Provider } from "react-redux";
 // import { store } from "../state";
 import { NotificationsProvider } from "@mantine/notifications";
+import { ModalsProvider } from "@mantine/modals";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -31,13 +32,15 @@ export default function App(props: AppProps) {
         }}
       >
         <NotificationsProvider>
-          {/* <Provider store={store}> */}
-          <AuthProvider>
-            <Layout {...pageProps}>
-              <Component {...pageProps} />
-            </Layout>
-          </AuthProvider>
-          {/* </Provider> */}
+          <ModalsProvider>
+            {/* <Provider store={store}> */}
+            <AuthProvider>
+              <Layout {...pageProps}>
+                <Component {...pageProps} />
+              </Layout>
+            </AuthProvider>
+            {/* </Provider> */}
+          </ModalsProvider>
         </NotificationsProvider>
       </MantineProvider>
     </>
