@@ -1,9 +1,9 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.scss";
-import { TableSort } from "../component/table";
 import cookie from "cookie";
-import { GetServerSideProps, NextApiRequest, NextPage } from "next";
-import { Pagination } from "@mantine/core";
+import { NextApiRequest, NextPage } from "next";
+import PaginationComponent from "../component/pagination";
+import TableSort from "../component/table";
 
 type Props = {
   token: string;
@@ -18,7 +18,8 @@ const Home: NextPage<Props> = ({ token }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <TableSort token={token} />
-      <Pagination className={styles.pagination} total={10} />
+      {/* <Pagination className={styles.pagination} total={10} /> */}
+      <PaginationComponent />
     </div>
   );
 };
@@ -39,22 +40,5 @@ export const getServerSideProps = async ({ req }: { req: NextApiRequest }) => {
         props: {},
       };
 };
-
-// export const getServerSideProps = async ({ req }) => {
-//   const parseCookies = (req) => {
-//     return cookie.parse(req ? req.headers.cookie || "" : "");
-//   };
-//   const { token } = parseCookies(req);
-
-//   return token
-//     ? {
-//         props: {
-//           token,
-//         },
-//       }
-//     : {
-//         props: {},
-//       };
-// };
 
 export default Home;

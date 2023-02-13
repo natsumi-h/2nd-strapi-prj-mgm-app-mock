@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import styles from "../styles/table.module.scss";
 import {
   createStyles,
@@ -161,7 +161,7 @@ function sortData(
   );
 }
 
-export function TableSort({ token }: TableSortProps) {
+const TableSort: FC<TableSortProps> = ({ token }) => {
   const [search, setSearch] = useState("");
 
   const [sortBy, setSortBy] = useState<keyof EditedProjectList | null>(null);
@@ -172,6 +172,8 @@ export function TableSort({ token }: TableSortProps) {
   // const { token } = useSelector((state) => state.auth);
   // console.log(token);
   const { data, error, isLoading } = useFetcher(endpointUrl, token);
+  console.log(data && data.data);
+
   // console.log(error);
   // console.log(data.error.message);
 
@@ -192,9 +194,12 @@ export function TableSort({ token }: TableSortProps) {
         .format("YYYY-MM-DD")
         .toString(),
       pm: editedProjectList.attributes.pm.data.attributes.username,
-      area: editedProjectList.attributes.related_area.data.attributes.areaName,
-      branch:
-        editedProjectList.attributes.related_branch.data.attributes.branchName,
+      area: editedProjectList.attributes.related_area.data
+        ? editedProjectList.attributes.related_area.data.attributes.areaName
+        : "",
+      branch: editedProjectList.attributes.related_branch.data
+        ? editedProjectList.attributes.related_branch.data.attributes.branchName
+        : "",
     }));
   // console.log(editedProjectList);
 
@@ -241,7 +246,8 @@ export function TableSort({ token }: TableSortProps) {
       ))
     : editedProjectList
     ? editedProjectList.map((row: EditedProjectList) => (
-        <tr key={row.id}>
+        <Link href="https://google.com" className={styles.link} key={row.id}>
+          {/* <tr key={row.id}> */}
           <td>{row.id}</td>
           <td>{row.createdOn}</td>
           <td>{row.updatedOn}</td>
@@ -251,7 +257,8 @@ export function TableSort({ token }: TableSortProps) {
           <td>{row.area}</td>
           <td>{row.branch}</td>
           <td>{row.sales}</td>
-        </tr>
+          {/* </tr> */}
+        </Link>
       ))
     : "";
 
@@ -384,4 +391,6 @@ export function TableSort({ token }: TableSortProps) {
     </ScrollArea>
   );
   // }
-}
+};
+
+export default TableSort;

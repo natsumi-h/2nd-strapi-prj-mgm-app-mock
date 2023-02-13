@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import {
   createStyles,
   Header,
@@ -73,7 +73,7 @@ interface HeaderSimpleProps {
   links: { link: string; label: string }[];
 }
 
-export function HeaderLayout({ links }: HeaderSimpleProps) {
+const HeaderLayout: FC<HeaderSimpleProps> = ({ links }) => {
   const router = useRouter();
   const [opened, { toggle }] = useDisclosure(false);
   const [active, setActive] = useState(links[0].link);
@@ -129,4 +129,6 @@ export function HeaderLayout({ links }: HeaderSimpleProps) {
       {/* </Container> */}
     </Header>
   );
-}
+};
+
+export default HeaderLayout;
