@@ -1,0 +1,35 @@
+@charset "utf-8";
+
+// ----------------------------------------------------------------------
+// MediaQuery
+// ----------------------------------------------------------------------
+@mixin pc-large {
+  // デスクトップ表示
+  @media only screen and (max-width: 1920px) {
+    @content;
+  }
+}
+@mixin pc {
+  // デスクトップ表示
+  @media only screen and (max-width: 1280px) {
+    @content;
+  }
+}
+@mixin tablet-large {
+  // タブレット表示
+  @media only screen and (max-width: 1024px) {
+    @content;
+  }
+}
+@mixin tablet {
+  // タブレット表示
+  @media screen and (max-width: 768px) {
+    @content;
+  }
+}
+@mixin sp {
+  // スマホ表示
+  @media screen and (max-width: 375px) {
+    @content;
+  }
+}

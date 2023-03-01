@@ -127,6 +127,35 @@ const HeaderLayout: FC<HeaderSimpleProps> = ({ links }) => {
         </div>
       </div>
       {/* </Container> */}
+      <div className={opened ? styles.overlayOpened : styles.overlayClosed}>
+        <nav className={styles.overLayNav}>
+          <li>
+            <Link onClick={toggle} className={styles.overlayNavList} href="/">
+              Home
+            </Link>
+          </li>
+          <li>
+            <Link
+              onClick={toggle}
+              className={styles.overlayNavList}
+              href="/create"
+            >
+              Create
+            </Link>
+          </li>
+          <li>
+            <button
+              className={styles.overlayNavList}
+              onClick={() => {
+                logout();
+                toggle;
+              }}
+            >
+              Logout
+            </button>
+          </li>
+        </nav>
+      </div>
     </Header>
   );
 };
