@@ -564,7 +564,7 @@ const TableSort: FC<TableSortProps> = ({ token }) => {
         {error.message}
       </Text>
     );
-  } else if (isLoading) {
+  } else if (isLoading || areasLoading || pmsLoading) {
     return <Loader className={styles.loader} />;
   } else if (data.error && data.error.message) {
     return (
