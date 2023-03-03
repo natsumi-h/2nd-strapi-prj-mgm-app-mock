@@ -81,7 +81,7 @@ export default function Login() {
             fontWeight: 900,
           })}
         >
-          Welcome back!test
+          Welcome back!
         </Title>
         <Text color="dimmed" size="sm" align="center" mt={5}>
           Do not have an account yet?{" "}
@@ -118,11 +118,11 @@ export default function Login() {
               mt="md"
               {...form.getInputProps("password")}
             />
-            <Group position="apart" mt="lg">
+            {/* <Group position="apart" mt="lg">
               <Link href="/account/forgot-password" className={styles.anchor}>
                 Forgot password?
               </Link>
-            </Group>
+            </Group> */}
             <Button type="submit" fullWidth mt="xl">
               Sign in
             </Button>

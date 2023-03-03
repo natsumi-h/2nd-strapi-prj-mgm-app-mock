@@ -146,8 +146,8 @@ export default function Signup() {
               mt="md"
               {...form.getInputProps("confirmPassword")}
             />
-            <Group position="apart" mt="lg">
-              {/* <Checkbox label="Remember me" sx={{ lineHeight: 1 }} /> */}
+            {/* <Group position="apart" mt="lg">
+              <Checkbox label="Remember me" sx={{ lineHeight: 1 }} />
               <Anchor<"a">
                 onClick={(event) => event.preventDefault()}
                 href="#"
@@ -155,7 +155,7 @@ export default function Signup() {
               >
                 Forgot password?
               </Anchor>
-            </Group>
+            </Group> */}
             <Button type="submit" fullWidth mt="xl">
               Create an Account
             </Button>
